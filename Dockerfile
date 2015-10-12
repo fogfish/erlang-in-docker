@@ -9,6 +9,7 @@ MAINTAINER Dmitry Kolesnikov <dmkolesnikov@gmail.com>
 ##
 ##
 ENV VSN 17.4
+ENV SSL 1.0.2d
 
 ##
 ## install dependencies
@@ -21,9 +22,28 @@ RUN \
       glibc-devel \
       make \
       ncurses-devel \
-      openssl-devel \
-      openssl-static \
       autoconf
+
+##
+## install open ssl
+RUN cd /tmp && \
+   curl -L -O http://www.openssl.org/source/openssl-${SSL}.tar.gz
+RUN cd /tmp && \
+   tar -zxvf openssl-${SSL}.tar.gz
+
+RUN cd /tmp/openssl-${SSL} && \
+   ./Configure \
+      --prefix=/usr/local/ssl \
+      --openssldir=/usr/local/ssl \
+      linux-x86_64 \
+      shared
+      
+RUN cd /tmp/openssl-${SSL} && \
+   make && \
+   make install
+
+RUN rm -Rf /tmp/openssl-${SSL}*
+
 
 ##
 ## download
@@ -43,7 +63,7 @@ RUN cd /tmp/otp_src_${VSN} && \
       --enable-hipe \
       --enable-native-libs \
       --disable-dynamic-ssl-lib \
-      --with-ssl=/usr \
+      --with-ssl=/usr/local/ssl \
       CFLAGS="-DOPENSSL_NO_EC=1"
 
 ##
@@ -53,8 +73,7 @@ RUN cd /tmp/otp_src_${VSN} && \
    make install && \
    ln -s /usr/local/otp_${VSN} /usr/local/otp
 
-RUN rm -Rf /tmp/otp_src_${VSN}
-RUN rm -f  /tmp/otp_src_${VSN}.tar.gz
+RUN rm -Rf /tmp/otp_src_${VSN}*
 
 ENV PATH $PATH:/usr/local/otp/bin
 
