@@ -1,4 +1,4 @@
-USR ?= app
+USR ?= sys
 APP ?= erlang
 VSN ?= latest
 
