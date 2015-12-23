@@ -1,15 +1,31 @@
-USR ?= sys
+##
+## container identity
+IID ?= fogfish
 APP ?= erlang
-VSN ?= latest
+VSN ?= 18.2.1
 
-FLAGS = 
+##
+## image build flags
+DFLAGS = \
+   --build-arg SSL=1.0.2e \
+   --build-arg OTP=${VSN}
 
-all:
-	docker build -t ${USR}/${APP}:${VSN} .
+##
+## image run flags
+IFLAGS =
 
+##
+## build container
+docker: Dockerfile
+	docker build ${DFLAGS} -t ${IID}/${APP}:${VSN} - < $< 
+
+##
+## 
 run:
-	docker run -it ${FLAGS} ${USR}/${APP}:${VSN}
+	docker run -it ${IFLAGS} ${IID}/${APP}:${VSN}
 
-deb:
-	docker run -it ${FLAGS} ${USR}/${APP}:${VSN} bash
+##
+##
+debug:
+	docker run -it ${IFLAGS} ${IID}/${APP}:${VSN} bash
 

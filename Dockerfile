@@ -8,8 +8,8 @@ MAINTAINER Dmitry Kolesnikov <dmkolesnikov@gmail.com>
 
 ##
 ##
-ENV VSN 17.4
-ENV SSL 1.0.2d
+ARG OTP=18.2.1
+ARG SSL=1.0.2e
 
 ##
 ## install dependencies
@@ -48,32 +48,34 @@ RUN rm -Rf /tmp/openssl-${SSL}*
 ##
 ## download
 RUN cd /tmp && \
-   curl -O http://www.erlang.org/download/otp_src_${VSN}.tar.gz
+   curl -O http://www.erlang.org/download/otp_src_${OTP}.tar.gz
 RUN cd /tmp && \
-   tar -zxvf otp_src_${VSN}.tar.gz
+   tar -zxvf otp_src_${OTP}.tar.gz
 
 ##
 ## configure
-RUN cd /tmp/otp_src_${VSN} && \
+RUN cd /tmp/otp_src_${OTP} && \
    ./configure \
-      --prefix=/usr/local/otp_${VSN} \
+      --prefix=/usr/local/otp_${OTP} \
       --enable-threads \
       --enable-smp-support \
       --enable-kernel-poll \
       --enable-hipe \
       --enable-native-libs \
       --disable-dynamic-ssl-lib \
-      --with-ssl=/usr/local/ssl \
-      CFLAGS="-DOPENSSL_NO_EC=1"
+      --with-ssl=/usr/local/ssl 
+
+#
+#     CFLAGS="-DOPENSSL_NO_EC=1"
 
 ##
 ## build
-RUN cd /tmp/otp_src_${VSN} && \
+RUN cd /tmp/otp_src_${OTP} && \
    make && \
    make install && \
-   ln -s /usr/local/otp_${VSN} /usr/local/otp
+   ln -s /usr/local/otp_${OTP} /usr/local/otp
 
-RUN rm -Rf /tmp/otp_src_${VSN}*
+RUN rm -Rf /tmp/otp_src_${OTP}*
 
 ENV PATH $PATH:/usr/local/otp/bin
 
