@@ -7,7 +7,8 @@ VSN ?= 18.2.1
 ##
 ## image build flags
 DFLAGS = \
-   --build-arg SSL=1.0.2e \
+   --rm=true \
+   --build-arg SSL=1.0.2f \
    --build-arg OTP=${VSN}
 
 ##

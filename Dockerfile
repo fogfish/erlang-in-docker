@@ -9,7 +9,7 @@ MAINTAINER Dmitry Kolesnikov <dmkolesnikov@gmail.com>
 ##
 ##
 ARG OTP=18.2.1
-ARG SSL=1.0.2e
+ARG SSL=1.0.2f
 
 ##
 ## install dependencies
@@ -48,7 +48,7 @@ RUN rm -Rf /tmp/openssl-${SSL}*
 ##
 ## download
 RUN cd /tmp && \
-   curl -O http://www.erlang.org/download/otp_src_${OTP}.tar.gz
+   curl -L -O http://www.erlang.org/download/otp_src_${OTP}.tar.gz
 RUN cd /tmp && \
    tar -zxvf otp_src_${OTP}.tar.gz
 
