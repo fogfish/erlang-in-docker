@@ -15,14 +15,14 @@ ARG SSL_VERSION=1.0.2h
 ## install dependencies
 RUN \
    yum -y install \
-      tar \
+      autoconf \
       gcc \
       gcc-c++ \
       git \
       glibc-devel \
       make \
       ncurses-devel \
-      autoconf
+      tar
 
 ##
 ## install open ssl
