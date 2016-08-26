@@ -39,7 +39,7 @@ RUN set -e \
          --openssldir=/usr/local/ssl \
       linux-x86_64 \
       shared \
-   && make \
+   && make -j4 \
    && make install
 
 RUN cd /tmp; rm -Rf /tmp/openssl*
@@ -62,7 +62,7 @@ RUN set -e \
          --enable-native-libs \
          --disable-dynamic-ssl-lib \
          --with-ssl=/usr/local/ssl \
-   && make \
+   && make -j4 \
    && make install \
    && ln -s /usr/local/otp_${OTP_VERSION} /usr/local/otp
 
