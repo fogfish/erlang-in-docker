@@ -32,7 +32,9 @@ RUN set -e \
    && curl -fSL -o openssl.sha256   http://www.openssl.org/source/openssl-${SSL_VERSION}.tar.gz.sha256 \
    && curl -fSL -o openssl.tar.gz http://www.openssl.org/source/openssl-${SSL_VERSION}.tar.gz \
    && SHA=$(printf "%s  openssl.tar.gz" `cat openssl.sha256` | sha256sum -c -); if [ "openssl.tar.gz: OK" != "${SHA}" ]; then exit 3; fi \
-   && tar -zxf openssl.tar.gz -C /tmp/openssl --strip-components=1 \
+   && tar -zxf openssl.tar.gz -C /tmp/openssl --strip-components=1
+
+RUN set -e \
    && cd /tmp/openssl \
    && ./Configure \
          --prefix=/usr/local/ssl \
@@ -50,7 +52,9 @@ RUN set -e \
    && mkdir -p /tmp/otp_src \
    && cd /tmp \
    && curl -fSL -o otp_src.tar.gz https://github.com/erlang/otp/archive/OTP-${OTP_VERSION}.tar.gz \
-   && tar -zxf otp_src.tar.gz -C /tmp/otp_src --strip-components=1 \
+   && tar -zxf otp_src.tar.gz -C /tmp/otp_src --strip-components=1
+
+RUN set -e \
    && cd /tmp/otp_src \
    && ./otp_build autoconf \
    && ./configure \
