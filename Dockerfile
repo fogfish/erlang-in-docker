@@ -66,6 +66,7 @@ RUN set -e \
          --enable-native-libs \
          --disable-dynamic-ssl-lib \
          --with-ssl=/usr/local/ssl \
+   && make clean \
    && make -j4 \
    && make install \
    && ln -s /usr/local/otp_${OTP_VERSION} /usr/local/otp
