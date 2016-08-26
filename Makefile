@@ -1,15 +1,22 @@
+## @author     Dmitry Kolesnikov, <dmkolesnikov@gmail.com>
+## @copyright  (c) 2014 Dmitry Kolesnikov. All Rights Reserved
+##
+## Generate a custom Dockerfile to build Docker images for
+## various versions of Erlang/OTP.
+
 ##
 ## container identity
 IID ?= fogfish
 APP ?= erlang
-VSN ?= 18.2.1
+ERL_VSN ?= 19.0.5
+SSL_VSN ?=  1.0.2h
 
 ##
 ## image build flags
 DFLAGS = \
    --rm=true \
-   --build-arg SSL=1.0.2f \
-   --build-arg OTP=${VSN}
+   --build-arg OTP_VERSION=${ERL_VSN} \
+   --build-arg SSL_VERSION=${SSL_VSN}
 
 ##
 ## image run flags
@@ -18,15 +25,14 @@ IFLAGS =
 ##
 ## build container
 docker: Dockerfile
-	docker build ${DFLAGS} -t ${IID}/${APP}:${VSN} - < $< 
+	docker build ${DFLAGS} -t ${IID}/${APP}:${ERL_VSN} - < $< 
 
 ##
 ## 
 run:
-	docker run -it ${IFLAGS} ${IID}/${APP}:${VSN}
+	docker run -it ${IFLAGS} ${IID}/${APP}:${ERL_VSN} erl
 
 ##
 ##
 debug:
-	docker run -it ${IFLAGS} ${IID}/${APP}:${VSN} bash
-
+	docker run -it ${IFLAGS} ${IID}/${APP}:${ERL_VSN} bash
