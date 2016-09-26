@@ -8,8 +8,8 @@ MAINTAINER Dmitry Kolesnikov <dmkolesnikov@gmail.com>
 
 ##
 ##
-ARG OTP_VERSION=19.0.5
-ARG SSL_VERSION=1.0.2h
+ARG OTP_VERSION
+ARG SSL_VERSION
 
 ##
 ## install dependencies

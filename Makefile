@@ -8,7 +8,7 @@
 ## container identity
 IID ?= fogfish
 APP ?= erlang
-ERL_VSN ?= 19.0.5
+ERL_VSN ?= 19.1
 SSL_VSN ?=  1.0.2h
 
 ##
