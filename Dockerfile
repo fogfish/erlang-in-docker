@@ -13,8 +13,9 @@ ARG SSL_VERSION
 
 ##
 ## install dependencies
-RUN \
-   yum -y install \
+RUN set -e \
+   && yum -y update  \
+   && yum -y install \
       autoconf \
       gcc \
       gcc-c++ \
