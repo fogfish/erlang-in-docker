@@ -7,11 +7,6 @@ FROM centos
 MAINTAINER Dmitry Kolesnikov <dmkolesnikov@gmail.com>
 
 ##
-##
-ARG OTP_VERSION
-ARG SSL_VERSION
-
-##
 ## install dependencies
 RUN set -e \
    && yum -y update  \
@@ -27,6 +22,8 @@ RUN set -e \
 
 ##
 ## install open ssl
+ARG SSL_VERSION
+
 RUN set -e \
    && mkdir -p /tmp/openssl \
    && cd /tmp \
@@ -49,6 +46,9 @@ RUN cd /tmp; rm -Rf /tmp/openssl*
 
 ##
 ## download
+ARG OTP_VERSION
+ARG WITH_NATIVE
+
 RUN set -e \
    && mkdir -p /tmp/otp_src \
    && cd /tmp \
@@ -63,11 +63,9 @@ RUN set -e \
          --enable-threads \
          --enable-smp-support \
          --enable-kernel-poll \
-         --enable-hipe \
-         --enable-native-libs \
          --disable-dynamic-ssl-lib \
          --with-ssl=/usr/local/ssl \
-   && make clean \
+         `test "${WITH_NATIVE}" = "true" && echo "--enable-hipe --enable-native-libs"` \
    && make -j4 \
    && make install \
    && ln -s /usr/local/otp_${OTP_VERSION} /usr/local/otp

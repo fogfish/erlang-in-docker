@@ -8,15 +8,18 @@
 ## container identity
 IID ?= fogfish
 APP ?= erlang
-ERL_VSN ?= 19.2
-SSL_VSN ?=  1.0.2h
+ERL_VSN ?= 20.0
+SSL_VSN ?=  1.0.2l
+
+WITH_NATIVE ?= false
 
 ##
 ## image build flags
 DFLAGS = \
    --rm=true \
    --build-arg OTP_VERSION=${ERL_VSN} \
-   --build-arg SSL_VERSION=${SSL_VSN}
+   --build-arg SSL_VERSION=${SSL_VSN} \
+	--build-arg WITH_NATIVE=${WITH_NATIVE}
 
 ##
 ## image run flags
