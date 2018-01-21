@@ -7,9 +7,8 @@ FROM centos
 MAINTAINER Dmitry Kolesnikov <dmkolesnikov@gmail.com>
 
 ##
-## install dependencies
+## build essential tools
 RUN set -e \
-   && yum -y update  \
    && yum -y install \
       autoconf \
       gcc \
@@ -30,9 +29,7 @@ RUN set -e \
    && curl -fSL -o openssl.sha256   http://www.openssl.org/source/openssl-${SSL_VERSION}.tar.gz.sha256 \
    && curl -fSL -o openssl.tar.gz http://www.openssl.org/source/openssl-${SSL_VERSION}.tar.gz \
    && SHA=$(printf "%s  openssl.tar.gz" `cat openssl.sha256` | sha256sum -c -); if [ "openssl.tar.gz: OK" != "${SHA}" ]; then exit 3; fi \
-   && tar -zxf openssl.tar.gz -C /tmp/openssl --strip-components=1
-
-RUN set -e \
+   && tar -zxf openssl.tar.gz -C /tmp/openssl --strip-components=1 \
    && cd /tmp/openssl \
    && ./Configure \
          --prefix=/usr/local/ssl \
@@ -40,9 +37,8 @@ RUN set -e \
       linux-x86_64 \
       shared \
    && make -j4 \
-   && make install
-
-RUN cd /tmp; rm -Rf /tmp/openssl*
+   && make install \
+   && rm -Rf /tmp/openssl*
 
 ##
 ## download
@@ -53,13 +49,11 @@ RUN set -e \
    && mkdir -p /tmp/otp_src \
    && cd /tmp \
    && curl -fSL -o otp_src.tar.gz https://github.com/erlang/otp/archive/OTP-${OTP_VERSION}.tar.gz \
-   && tar -zxf otp_src.tar.gz -C /tmp/otp_src --strip-components=1
-
-RUN set -e \
+   && tar -zxf otp_src.tar.gz -C /tmp/otp_src --strip-components=1 \
    && cd /tmp/otp_src \
    && ./otp_build autoconf \
    && ./configure \
-         --prefix=/usr/local/otp_${OTP_VERSION} \
+         --prefix=/usr/local/otp \
          --enable-threads \
          --enable-smp-support \
          --enable-kernel-poll \
@@ -68,9 +62,8 @@ RUN set -e \
          `test "${WITH_NATIVE}" = "true" && echo "--enable-hipe --enable-native-libs"` \
    && make -j4 \
    && make install \
-   && ln -s /usr/local/otp_${OTP_VERSION} /usr/local/otp
-
-RUN cd /tmp; rm -Rf /tmp/otp_src*
+   && ln -s /usr/local/otp_${OTP_VERSION} /usr/local/otp \
+   && rm -Rf /tmp/otp_src*
 
 ENV PATH $PATH:/usr/local/otp/bin
 
