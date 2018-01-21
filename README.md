@@ -2,10 +2,11 @@
 
 This project provides images of Erlang/OTP for Docker platform:
 
-* [![Docker Pulls](https://img.shields.io/docker/pulls/fogfish/erlang-centos.svg)](https://github.com/docker-file/erlang) fogfish/erlang-centos
-* [![Docker Pulls](https://img.shields.io/docker/pulls/fogfish/erlang-centos-rt.svg)](https://github.com/docker-file/erlang) fogfish/erlang-centos-rt
-* [![Docker Pulls](https://img.shields.io/docker/pulls/fogfish/erlang-alpine.svg)](https://github.com/docker-file/erlang) fogfish/erlang-alpine
-* [![Docker Pulls](https://img.shields.io/docker/pulls/fogfish/erlang-alpine-rt.svg)](https://github.com/docker-file/erlang) fogfish/erlang-alpine-rt
+--- | --- |
+`fogfish/erlang-centos` | [![Docker Pulls](https://img.shields.io/docker/pulls/fogfish/erlang-centos.svg)](https://github.com/docker-file/erlang) 
+`fogfish/erlang-centos-rt` | [![Docker Pulls](https://img.shields.io/docker/pulls/fogfish/erlang-centos-rt.svg)](https://github.com/docker-file/erlang) 
+`fogfish/erlang-alpine` | [![Docker Pulls](https://img.shields.io/docker/pulls/fogfish/erlang-alpine.svg)](https://github.com/docker-file/erlang) 
+`fogfish/erlang-alpine-rt` | [![Docker Pulls](https://img.shields.io/docker/pulls/fogfish/erlang-alpine-rt.svg)](https://github.com/docker-file/erlang) 
 
 
 
