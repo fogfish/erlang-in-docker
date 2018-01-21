@@ -2,6 +2,7 @@
 
 This project provides images of Erlang/OTP for Docker platform:
 
+Image | Stats
 --- | --- 
 `fogfish/erlang-centos` | [![Docker Pulls](https://img.shields.io/docker/pulls/fogfish/erlang-centos.svg)](https://github.com/docker-file/erlang) 
 `fogfish/erlang-centos-rt` | [![Docker Pulls](https://img.shields.io/docker/pulls/fogfish/erlang-centos-rt.svg)](https://github.com/docker-file/erlang) 
