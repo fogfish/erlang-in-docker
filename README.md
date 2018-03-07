@@ -2,21 +2,22 @@
 
 This project provides images of Erlang/OTP for Docker platform:
 
+<!--
 Image | Stats
 --- | --- 
 `fogfish/erlang-centos` | [![Docker Pulls](https://img.shields.io/docker/pulls/fogfish/erlang-centos.svg)](https://github.com/fogfish/erlang-in-docker) 
 `fogfish/erlang-centos-rt` | [![Docker Pulls](https://img.shields.io/docker/pulls/fogfish/erlang-centos-rt.svg)](https://github.com/fogfish/erlang-in-docker) 
 `fogfish/erlang-alpine` | [![Docker Pulls](https://img.shields.io/docker/pulls/fogfish/erlang-alpine.svg)](https://github.com/fogfish/erlang-in-docker) 
 `fogfish/erlang-alpine-rt` | [![Docker Pulls](https://img.shields.io/docker/pulls/fogfish/erlang-alpine-rt.svg)](https://github.com/fogfish/erlang-in-docker) 
-
+-->
 
 
 ## Key features
 
 * Build from **source code**
 * Support **centos** and **alpine** images
-* **Build** toolchain for Erlang application
-* Minimal **runtime** image 
+* Minimal **runtime** environment (341MB for centos based, 93MB for alpine based)
+* Tool chains to **build** Erlang application
 
 
 ## Getting started
