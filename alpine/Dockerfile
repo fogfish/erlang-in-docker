@@ -97,4 +97,8 @@ RUN set -e \
 
 ENV PATH $PATH:/usr/local/otp/bin
 
-EXPOSE 4369
+##
+## required to run Erlang release 
+RUN set -e \
+   && yum -y install \
+      which
