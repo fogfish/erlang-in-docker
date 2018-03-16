@@ -1,0 +1,55 @@
+#!/bin/sh
+##
+APP=$1
+
+##
+##
+sys_host_id() {
+   SYS_HOST_ID=$( curl -s --connect-timeout 5 http://169.254.169.254/latest/meta-data/local-hostname )
+   if [ -z "${HOST_ID}" ] ;
+   then
+      SYS_HOST_ID=$( hostname || echo "localhost.localdomain" )
+   fi
+}
+
+##
+##
+sys_node_id() {
+   if [ -f /.dockerenv ]; then
+      SYS_NODE_ID=$( cat /proc/self/cgroup | grep "cpu:/" | sed 's/\([0-9]\):cpu:\/[^\/]*\/[^\/]*\///g' | head -c 12 )
+   else
+      SYS_NODE_ID=$( base64 /dev/urandom | tr -dc 'a-f0-9' | head -c 12 )
+   fi  
+}
+
+##
+##
+erl_node_id() {
+   USR_NODE_ID=${NODE%@*}
+   USR_HOST_ID=${NODE#*@}
+   if [ -z "${USR_NODE_ID}" ] ;
+   then
+      ERL_NODE="${SYS_NODE_ID}@${SYS_HOST_ID}"
+   else
+      if [ "${USR_NODE_ID}" == "${USR_HOST_ID}" ] ;
+      then
+         ERL_NODE="${USR_NODE_ID}@${SYS_HOST_ID}"
+      else
+         ERL_NODE="${USR_NODE_ID}@${USR_HOST_ID}"
+      fi
+   fi
+}
+
+
+sys_host_id
+sys_node_id
+erl_node_id
+
+##
+##
+export HOME=/root
+export RELX_REPLACE_OS_VARS=true
+export CODE_LOADING_MODE=interactive
+export ERL_NODE
+
+/rel/${APP}/bin/${APP} foreground

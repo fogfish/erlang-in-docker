@@ -1,0 +1,6 @@
+FROM alpine
+
+ADD otp /usr/local/otp
+ENV PATH $PATH:/usr/local/otp/bin
+
+ADD spawn-erlang-node /usr/bin/spawn-erlang-node

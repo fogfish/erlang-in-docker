@@ -15,8 +15,8 @@ SSL_VSN ?= 1.0.2n
 ORG    ?= fogfish
 APP    ?= erlang-centos
 
-DOCKER  = ${ORG}/${APP}:${ERL_VSN}
-RUNTIME = ${ORG}/${APP}-rt:${ERL_VSN}
+DOCKER  = ${ORG}/${APP}
+RUNTIME = ${ORG}/${APP}-rt
 
 ##
 ## configuration flags
@@ -30,26 +30,22 @@ DFLAGS = \
 ##
 ## 
 docker: Dockerfile
-	@echo "==> build ${DOCKER}" ;\
-	docker build ${DFLAGS} -t ${DOCKER} - < $< 
+	@echo "==> build ${DOCKER}"
+	@docker build ${DFLAGS} -t ${DOCKER}:${ERL_VSN} - < $<
+	@docker tag ${DOCKER}:${ERL_VSN} ${DOCKER}:latest
 
 ##
 ##
 runtime: otp Dockerfile.runtime
-	@echo "==> build ${RUNTIME}" ;\
-	docker build -t ${RUNTIME} -f Dockerfile.runtime . ;\
-	rm -Rf otp ;\
-	rm Dockerfile.runtime
+	@echo "==> build ${RUNTIME}"
+	@docker build -t ${RUNTIME} -f Dockerfile.runtime .
+	@docker tag ${RUNTIME}:${ERL_VSN} ${RUNTIME}:latest
+	@rm -Rf otp
 
-
-Dockerfile.runtime:
-	@echo "FROM centos" > $@ ;\
-	echo "ADD otp /usr/local/otp" >> $@ ;\
-	echo "ENV PATH \x24PATH:/usr/local/otp/bin" >> $@
 
 otp:
 	@echo "==> extracting erlang ${ERL_VSN}" ;\
-	I=`docker create ${DOCKER}` ;\
+	I=`docker create ${DOCKER}:${ERL_VSN}` ;\
 	docker cp $$I:/usr/local/$@ $@ ;\
 	docker rm -f $$I
 
@@ -66,8 +62,8 @@ debug:
 ##
 ##
 publish:
-	docker push ${DOCKER}
-	docker push ${RUNTIME}
-
-
+	@docker push ${DOCKER}:${ERL_VSN}
+	@docker push ${DOCKER}:latest
+	@docker push ${RUNTIME}:${ERL_VSN}
+	@docker push ${RUNTIME}:latest
 
