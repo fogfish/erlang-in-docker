@@ -38,10 +38,9 @@ docker: Dockerfile
 ##
 runtime: otp Dockerfile.runtime
 	@echo "==> build ${RUNTIME}"
-	@docker build -t ${RUNTIME} -f Dockerfile.runtime .
+	@docker build -t ${RUNTIME}:${ERL_VSN} -f Dockerfile.runtime .
 	@docker tag ${RUNTIME}:${ERL_VSN} ${RUNTIME}:latest
 	@rm -Rf otp
-
 
 otp:
 	@echo "==> extracting erlang ${ERL_VSN}" ;\
