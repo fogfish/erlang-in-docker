@@ -11,25 +11,22 @@ Erlang **runtime environment** to package and ship Erlang releases as Docker con
 
 Erlang **toolchains** to build Erlang application within the Docker environment. These toolchains are compatible with [Erlang Workflow](https://github.com/fogfish/makefile) and they are assembled from Erlang/OTP **sources**. 
 
-Erlang/OTP runtime environment
-- [ ] `fogfish/erlang-alpine-rt:20.3`
-- [ ] `fogfish/erlang-centos-rt:20.3`
-- [x] `fogfish/erlang-alpine-rt:20.2`
-- [x] `fogfish/erlang-centos-rt:20.2`
+Erlang/OTP **runtime**: 
 
-Erlang/OTP toolchain
-- [ ] `fogfish/erlang-alpine:20.3`
-- [ ] `fogfish/erlang-centos:20.3`
-- [x] `fogfish/erlang-alpine:20.2`
-- [x] `fogfish/erlang-centos:20.2`
+- `fogfish/erlang-alpine-rt`
+- `fogfish/erlang-centos-rt`
+
+Erlang/OTP **toolchain**
+
+- `fogfish/erlang-alpine`
+- `fogfish/erlang-centos`
 
 
 ## Getting started
 
-The project supplies pre-built releases for Docker platforms. You can also assemble Docker images by yourself running `make` command. These instructions assumes that `rebar3` and `relx` tools are used for development. 
+The project supplies pre-built releases for Docker platforms. You can also assemble Docker images by yourself running `make` command. 
 
-
-Create a `Dockerfile` with following content to ship Erlang release. 
+Ship your Erlang release with `Dockerfile` 
 
 ```dockerfile
 FROM fogfish/erlang-alpine-rt
@@ -37,6 +34,11 @@ FROM fogfish/erlang-alpine-rt
 COPY _build/default/rel /rel
 
 ENTRYPOINT spawn-erlang-node my-app
+```
+
+Do not forget to exclude ERTS when you are assembling release
+```erlang
+{include_erts,         false}.
 ```
 
 As part of your application configuration `vm.args` set a node name:
@@ -61,7 +63,7 @@ docker run -it -e "NODE=app@localhost.localdomain" my-app
 ```
 
 
-See [Erlang Workflow](https://github.com/fogfish/makefile) for details about usage of Erlang toolchains.
+See [Erlang Workflow](https://github.com/fogfish/makefile) for details about usage of Erlang toolchains. It assumes that `rebar3` and `relx` tools are used for development. 
 
 
 ## Contributing/Bugs

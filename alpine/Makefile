@@ -7,8 +7,8 @@
 
 ##
 ## versions
-ERL_VSN ?= 20.2
-SSL_VSN ?= 1.0.2n
+ERL_VSN ?= 20.3
+SSL_VSN ?= 1.0.2o
 
 ##
 ## container identity
@@ -38,7 +38,7 @@ docker: Dockerfile
 ##
 runtime: otp Dockerfile.runtime
 	@echo "==> build ${RUNTIME}"
-	@docker build -t ${RUNTIME} -f Dockerfile.runtime .
+	@docker build -t ${RUNTIME}:${ERL_VSN} -f Dockerfile.runtime .
 	@docker tag ${RUNTIME}:${ERL_VSN} ${RUNTIME}:latest
 	@rm -Rf otp
 

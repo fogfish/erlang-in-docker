@@ -7,8 +7,8 @@
 
 ##
 ## versions
-ERL_VSN ?= 20.2
-SSL_VSN ?= 1.0.2n
+ERL_VSN ?= 20.3
+SSL_VSN ?= 1.0.2o
 
 ##
 ## container identity

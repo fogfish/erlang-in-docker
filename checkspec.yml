@@ -1,0 +1,16 @@
+version: 0.1
+
+phases:
+  install:
+    commands:
+      - echo "==> install"
+  pre_build:
+    commands:
+      - echo "==> pre-build"
+  build:
+    commands:
+      - echo "==> test"
+  post_build:
+    commands:
+      - /usr/local/bin/ci-cd -p
+
