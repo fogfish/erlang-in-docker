@@ -3,7 +3,7 @@ version: 0.1
 phases:
   install:
     commands:
-      - /usr/local/bin/config.sh
+      - /usr/local/bin/config
   pre_build:
     commands:
       - echo "==> pre-build"
