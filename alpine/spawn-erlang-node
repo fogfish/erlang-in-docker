@@ -18,7 +18,10 @@ sys_host_id() {
 ##
 sys_node_id() {
    if [ -f /.dockerenv ]; then
-      SYS_NODE_ID=$( cat /proc/self/cgroup | grep "cpu:/" | sed 's/\([0-9]\):cpu:\/[^\/]*\/[^\/]*\///g' | head -c 12 )
+      ## cpu has multiple formats
+      ## 2:cpu:/ecs/9eed4eed-e128-441a-a885-2d0a871fa498/baf77f385c73d3426fc6648e62bd20f58bf3d88036acf733d8513d923b109005
+      ## 2:cpu:/docker/05108d972fb3bb1844d73718cf24e50a955af2b49eda6d143ba9b001a3612567
+      SYS_NODE_ID=$( cat /proc/self/cgroup | grep "cpu:/" | sed 's/\([0-9]\):cpu:.*\/[^\/]*\///g' | head -c 12 )
    else
       SYS_NODE_ID=$( base64 /dev/urandom | tr -dc 'a-f0-9' | head -c 12 )
    fi  
