@@ -29,13 +29,29 @@ RUN set -e \
    && rm -Rf /tmp/musl
 
 ##
+## install ncurses, it is required to enable remsh with erlang nodes
+RUN set -e \
+   && mkdir -p /tmp/ncurses \
+   && cd /tmp \
+   && curl -fSL -o ncurses.tar.gz https://ftp.gnu.org/pub/gnu/ncurses/ncurses-6.0.tar.gz \
+   && tar -zxf ncurses.tar.gz -C /tmp/ncurses --strip-components=1 \
+   && cd /tmp/ncurses \
+   && CC="musl-gcc" ./configure \
+      --prefix=/usr/local/ncurses \
+      --with-shared \
+   && make -j4 \
+   && make install \
+   && rm -Rf /tmp/ncurses*
+
+
+##
 ## install open ssl
 ARG SSL_VERSION
 
 RUN set -e \
    && mkdir -p /tmp/openssl \
    && cd /tmp \
-   && curl -fSL -o openssl.sha256   http://www.openssl.org/source/openssl-${SSL_VERSION}.tar.gz.sha256 \
+   && curl -fSL -o openssl.sha256 http://www.openssl.org/source/openssl-${SSL_VERSION}.tar.gz.sha256 \
    && curl -fSL -o openssl.tar.gz http://www.openssl.org/source/openssl-${SSL_VERSION}.tar.gz \
    && SHA=$(printf "%s  openssl.tar.gz" `cat openssl.sha256` | sha256sum -c -); if [ "openssl.tar.gz: OK" != "${SHA}" ]; then exit 3; fi \
    && tar -zxf openssl.tar.gz -C /tmp/openssl --strip-components=1 \
@@ -49,6 +65,8 @@ RUN set -e \
    && make install \
    && rm -Rf /tmp/openssl*
 
+
+
 ##
 ## download
 ARG OTP_VERSION
@@ -61,14 +79,18 @@ RUN set -e \
    && tar -zxf otp_src.tar.gz -C /tmp/otp_src --strip-components=1 \
    && cd /tmp/otp_src \
    && ./otp_build autoconf \
-   && CC="musl-gcc" ./configure \
+   && export CC="musl-gcc" \
+   && export CPPFLAGS='-I/usr/local/ncurses/include' \
+   && export LDFLAGS='-L/usr/local/ncurses/lib' \
+   && export export LD_LIBRARY_PATH=/usr/local/ncurses/lib \
+   && ./configure \
          --prefix=/usr/local/otp \
          --enable-threads \
          --enable-smp-support \
          --enable-kernel-poll \
          --disable-dynamic-ssl-lib \
          --with-ssl=/usr/local/ssl \
-         --without-termcap \
+         --with-termcap \
          --without-javac \
          --without-wx \
          --without-debugger \
@@ -88,7 +110,7 @@ RUN set -e \
          --without-orber \
          --without-percept \
          --without-typer \
-         --enable-hipe \
+         --disable-hipe \
          `test "${WITH_NATIVE}" = "true" && echo "--enable-native-libs"` \
    && make -j4 \
    && make install \
