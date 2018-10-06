@@ -1,0 +1,13 @@
+{application, APP,
+   [
+      {description, "serverless APP"},
+      {vsn,         "0.0.0"},
+      {modules,     []},
+      {registered,  []},
+      {applications,[
+         kernel
+        ,stdlib
+      ]},
+      {env, []}
+   ]
+}.
