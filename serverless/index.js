@@ -1,4 +1,5 @@
 const { spawn } = require('child_process');
+require('events').EventEmitter.defaultMaxListeners = 0
 
 const env = process.env
 const erl = spawn('./serverless/bin/escript', ['APP'], {env: { ...env, HOME: "/var/task" }});
