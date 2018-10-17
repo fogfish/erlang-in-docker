@@ -3,7 +3,7 @@ FROM alpine
 RUN set -e \
    && apk --no-cache update \
    && apk --no-cache add curl ncurses \
-   && ln -s /usr/lib/libncursesw.so.6.0 /usr/lib/libncurses.so.6
+   && ln -s /usr/lib/libncursesw.so.6 /usr/lib/libncurses.so.6
 
 ADD otp /usr/local/otp
 ENV PATH $PATH:/usr/local/otp/bin
