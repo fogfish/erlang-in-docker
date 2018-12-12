@@ -1,14 +1,25 @@
 #!/bin/sh
 ##
 ## NODE - either fqdn or local
+## NODE_USE_HOSTNAME
+## NODE_USE_IPV4
 
 APP=$1
 
 ##
 ##
 sys_host_id() {
-   SYS_HOST_ID=$( curl -s --connect-timeout 5 http://169.254.169.254/latest/meta-data/local-hostname )
-   if [ -z "${HOST_ID}" ] ;
+   if [ -z "${NODE_USE_HOSTNAME}" ] ;
+   then
+      if [ -z "${NODE_USE_IPV4}" ] ; 
+      then
+         SYS_HOST_ID=$( curl -s --connect-timeout 5 http://169.254.169.254/latest/meta-data/local-hostname )
+      else
+         SYS_HOST_ID=$( curl -s --connect-timeout 5 http://169.254.169.254/latest/meta-data/local-ipv4 )
+      fi
+   fi
+
+   if [ -z "${SYS_HOST_ID}" ] ;
    then
       SYS_HOST_ID=$( hostname || echo "localhost.localdomain" )
    fi
