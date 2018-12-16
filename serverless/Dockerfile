@@ -112,7 +112,7 @@ RUN set -e \
    && rm /var/task/serverless/lib/erlang/erts-*/bin/typer \
    && rm /var/task/serverless/lib/erlang/erts-*/bin/ct_run
 
-COPY index.js /var/task/index.js
+COPY bootstrap /var/task/bootstrap
 COPY function /function
 
 ENV PATH $PATH:/var/task/bin
