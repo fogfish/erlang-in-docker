@@ -113,6 +113,7 @@ RUN set -e \
    && rm /var/task/serverless/lib/erlang/erts-*/bin/ct_run
 
 COPY bootstrap /var/task/bootstrap
+COPY erlang.cookie /var/task/.erlang.cookie
 COPY function /function
 
 ENV PATH $PATH:/var/task/bin
