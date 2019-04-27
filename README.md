@@ -22,6 +22,11 @@ Erlang/OTP **toolchain**
 - `fogfish/erlang-centos`
 
 
+Erlang/OTP **serverless**
+
+- `fogfish/erlang-serverless`
+
+
 ## Getting started
 
 The project supplies pre-built releases for Docker platforms. You can also assemble Docker images by yourself running `make` command. 

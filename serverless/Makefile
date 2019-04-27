@@ -16,16 +16,22 @@ ORG    ?= fogfish
 APP    ?= erlang-serverless
 
 DOCKER  = ${ORG}/${APP}
-RUNTIME = ${ORG}/${APP}-rt
 
 ##
 ## configuration flags
 WITH_NATIVE_LIB ?= false
+WITH_PREFIX=/opt
 DFLAGS = \
    --rm=true \
    --build-arg OTP_VERSION=${ERL_VSN} \
    --build-arg SSL_VERSION=${SSL_VSN} \
-	--build-arg WITH_NATIVE=${WITH_NATIVE_LIB}
+	--build-arg WITH_NATIVE=${WITH_NATIVE_LIB} \
+	--build-arg WITH_PREFIX=${WITH_PREFIX}
+
+##
+## layer builder
+BUILDER = FROM ${DOCKER}:${ERL_VSN}\nRUN cd ${WITH_PREFIX} && zip ${APP}-${ERL_VSN}.zip -r * > /dev/null
+
 
 ##
 ## 
@@ -36,17 +42,21 @@ docker: Dockerfile
 
 ##
 ##
-runtime: otp Dockerfile.runtime
-	@echo "==> build ${RUNTIME}"
-	@docker build -t ${RUNTIME}:${ERL_VSN} -f Dockerfile.runtime .
-	@docker tag ${RUNTIME}:${ERL_VSN} ${RUNTIME}:latest
-	@rm -Rf otp
+layer: ${APP}-${ERL_VSN}.zip
+	aws lambda publish-layer-version \
+		--layer-name ${APP} \
+		--description "${APP} ${ERL_VSN} (ssl ${SSL_VSN})" \
+		--zip-file fileb://./$^
 
-otp:
-	@echo "==> extracting erlang ${ERL_VSN}" ;\
-	I=`docker create ${DOCKER}:${ERL_VSN}` ;\
-	docker cp $$I:/usr/local/$@ $@ ;\
-	docker rm -f $$I
+${APP}-${ERL_VSN}.zip:
+	echo "${BUILDER}" > Dockerfile.layer ;\
+	docker build --file=Dockerfile.layer --force-rm=true --tag=build/${APP}:latest . ;\
+	I=`docker create build/${APP}:latest` ;\
+	docker cp $$I:${WITH_PREFIX}/$@ $@ ;\
+	docker rm -f $$I ;\
+	docker rmi build/${APP}:latest ;\
+	rm Dockerfile.layer ;\
+	test -f $@ && echo "==> tarball: $@"
 
 ##
 ## 
@@ -63,6 +73,3 @@ debug:
 publish:
 	@docker push ${DOCKER}:${ERL_VSN}
 	@docker push ${DOCKER}:latest
-	@docker push ${RUNTIME}:${ERL_VSN}
-	@docker push ${RUNTIME}:latest
-

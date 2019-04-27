@@ -44,6 +44,7 @@ RUN set -e \
 ## download
 ARG OTP_VERSION
 ARG WITH_NATIVE
+ARG WITH_PREFIX
 
 RUN set -e \
    && mkdir -p /tmp/otp_src \
@@ -53,7 +54,7 @@ RUN set -e \
    && cd /tmp/otp_src \
    && ./otp_build autoconf \
    && ./configure \
-         --prefix=/var/task/serverless \
+         --prefix=${WITH_PREFIX}/serverless \
          --enable-threads \
          --enable-smp-support \
          --enable-kernel-poll \
@@ -93,7 +94,7 @@ RUN set -e \
    && make -j4 \
    && make install \
    && rm -Rf /tmp/otp_src* \
-   && for I in /var/task/serverless/lib/erlang/erts* /var/task/serverless/lib/erlang/lib/* ;\
+   && for I in ${WITH_PREFIX}/serverless/lib/erlang/erts* ${WITH_PREFIX}/serverless/lib/erlang/lib/* ;\
       do \
          rm -rf ${I}/src; \
          rm -rf ${I}/doc; \
@@ -102,21 +103,20 @@ RUN set -e \
          rm -rf ${I}/emacs; \
          rm -rf ${I}/c_src; \
       done \
-   && rm -rf /var/task/serverless/lib/erlang/erts-*/lib/ \
-   && rm /var/task/serverless/bin/dialyzer \
-   && rm /var/task/serverless/lib/erlang/bin/dialyzer \
-   && rm /var/task/serverless/lib/erlang/erts-*/bin/dialyzer \
-   && rm /var/task/serverless/bin/erlc \
-   && rm /var/task/serverless/lib/erlang/bin/erlc \
-   && rm /var/task/serverless/lib/erlang/erts-*/bin/erlc \
-   && rm /var/task/serverless/lib/erlang/erts-*/bin/typer \
-   && rm /var/task/serverless/lib/erlang/erts-*/bin/ct_run
+   && rm -rf ${WITH_PREFIX}/serverless/lib/erlang/erts-*/lib/ \
+   && rm ${WITH_PREFIX}/serverless/bin/dialyzer \
+   && rm ${WITH_PREFIX}/serverless/lib/erlang/bin/dialyzer \
+   && rm ${WITH_PREFIX}/serverless/lib/erlang/erts-*/bin/dialyzer \
+   && rm ${WITH_PREFIX}/serverless/bin/erlc \
+   && rm ${WITH_PREFIX}/serverless/lib/erlang/bin/erlc \
+   && rm ${WITH_PREFIX}/serverless/lib/erlang/erts-*/bin/erlc \
+   && rm ${WITH_PREFIX}/serverless/lib/erlang/erts-*/bin/typer \
+   && rm ${WITH_PREFIX}/serverless/lib/erlang/erts-*/bin/ct_run
 
-COPY bootstrap /var/task/bootstrap
-COPY erlang.cookie /var/task/.erlang.cookie
+COPY erlang.cookie ${WITH_PREFIX}/.erlang.cookie
 COPY function /function
 
-ENV PATH $PATH:/var/task/bin
+ENV PATH $PATH:${WITH_PREFIX}/bin
 
 ##
 ## required to run Erlang release 
