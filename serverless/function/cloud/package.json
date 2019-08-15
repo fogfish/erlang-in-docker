@@ -1,0 +1,14 @@
+{
+  "name": "iaac-APP",
+  "version": "0.0.0",
+  "description": "...",
+  "private": false,
+  "license": "MIT",
+  "dependencies": {
+    "@types/node": "*",
+    "@aws-cdk/core": "*",
+    "@aws-cdk/aws-iam": "*",
+    "@aws-cdk/aws-lambda": "*",
+    "@aws-cdk/aws-logs": "*"
+  }
+}
