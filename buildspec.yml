@@ -3,13 +3,13 @@ version: 0.2
 phases:
   install:
     commands:
-      - echo "==> install"
+      - echo "==> [build] install"
   pre_build:
     commands:
-      - echo "==> pre-build"
+      - echo "==> [build] pre-build"
   build:
     commands:
-      - echo "==> test"
+      - echo "==> [build] build"
   post_build:
     commands:
-      - echo "==> post-build"
+      - echo "==> [build] post-build"
