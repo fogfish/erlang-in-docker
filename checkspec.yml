@@ -1,4 +1,4 @@
-version: 0.1
+version: 0.2
 
 phases:
   install:
@@ -12,5 +12,4 @@ phases:
       - echo "==> test"
   post_build:
     commands:
-      - /usr/local/bin/ci-cd -p
-
+      - echo "==> post-build"
