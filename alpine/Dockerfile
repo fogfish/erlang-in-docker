@@ -3,7 +3,7 @@
 ##
 ## @description
 ##   Erlang/OTP from scratch 
-FROM centos
+FROM centos:7
 MAINTAINER Dmitry Kolesnikov <dmkolesnikov@gmail.com>
 
 ##
@@ -121,6 +121,18 @@ ENV PATH $PATH:/usr/local/otp/bin
 
 ##
 ## required to run Erlang release 
+# RUN set -e \
+#    && yum -y install \
+#       which
+
+FROM alpine
+
 RUN set -e \
-   && yum -y install \
-      which
+   && apk --no-cache update \
+   && apk --no-cache add curl ncurses \
+   && ln -s /usr/lib/libncursesw.so.6 /usr/lib/libncurses.so.6
+
+COPY --from=0 /usr/local/otp /usr/local/otp
+ENV PATH $PATH:/usr/local/otp/bin
+
+ADD spawn-erlang-node /usr/bin/spawn-erlang-node

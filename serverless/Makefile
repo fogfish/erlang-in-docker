@@ -3,12 +3,12 @@
 ##
 ## Generate a custom Dockerfile to build Docker images for
 ## various versions of Erlang/OTP.
-.PHONY: docker runtime run debug
+.PHONY: docker layer run debug
 
 ##
 ## versions
-ERL_VSN ?= 20.3
-SSL_VSN ?= 1.0.2o
+ERL_VSN ?=
+SSL_VSN ?=
 
 ##
 ## container identity
@@ -22,9 +22,9 @@ DOCKER  = ${ORG}/${APP}
 WITH_NATIVE_LIB ?= false
 WITH_PREFIX=/opt
 DFLAGS = \
-   --rm=true \
-   --build-arg OTP_VERSION=${ERL_VSN} \
-   --build-arg SSL_VERSION=${SSL_VSN} \
+  --rm=true \
+  --build-arg OTP_VERSION=${ERL_VSN} \
+  --build-arg SSL_VERSION=${SSL_VSN} \
 	--build-arg WITH_NATIVE=${WITH_NATIVE_LIB} \
 	--build-arg WITH_PREFIX=${WITH_PREFIX}
 
@@ -32,6 +32,7 @@ DFLAGS = \
 ## layer builder
 BUILDER = FROM ${DOCKER}:${ERL_VSN}\nRUN cd ${WITH_PREFIX} && zip ${APP}-${ERL_VSN}.zip -r * > /dev/null
 
+all: docker layer
 
 ##
 ## 

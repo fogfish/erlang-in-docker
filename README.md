@@ -1,14 +1,32 @@
 # Erlang/OTP in Docker
 
-This project provides images of Erlang/OTP for Docker platform.
+This project provides images of Erlang/OTP for Docker.
 
 
 ## Key features
 
+The project supplies pre-built releases for Docker platforms. You can also assemble Docker images by yourself, see the [Getting started](#getting-strated).
+
+### Serverless runtime
+
+```
+docker pull fogfish/erlang-serverless
+```
+
+The runtime is compatible with https://github.com/fogfish/serverless
+
+
+### Docker runtime 
+
+```
+docker pull fogfish/erlang-alpine
+```
+
 The development and distribution of Erlang applications is achieved using [release](http://erlang.org/doc/design_principles/release_structure.html). The release contains complete application and all its dependencies, which makes it a perfect distribution package. 
 
-Erlang **runtime environment** to package and ship Erlang releases as Docker containers. Environments provides a minimal images: **centos** `fogfish/erlang-centos-rt` about 341MB and **alpine** `fogfish/erlang-alpine-rt` about 93MB.
+Erlang **runtime environment** to package and ship Erlang releases as Docker containers. Environments provides a minimal **alpine** image about 100MB.
 
+<!--
 Erlang **toolchains** to build Erlang application within the Docker environment. These toolchains are compatible with [Erlang Workflow](https://github.com/fogfish/makefile) and they are assembled from Erlang/OTP **sources**. 
 
 Erlang/OTP **runtime**: 
@@ -26,6 +44,7 @@ Erlang/OTP **serverless**
 
 - `fogfish/erlang-serverless`
 
+-->
 
 ## Getting started
 
