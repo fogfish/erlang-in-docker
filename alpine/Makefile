@@ -7,8 +7,8 @@
 
 ##
 ## versions
-ERL_VSN ?= 20.3
-SSL_VSN ?= 1.0.2o
+ERL_VSN ?= 22.1
+SSL_VSN ?= 1.0.2t
 
 ##
 ## container identity
@@ -22,16 +22,16 @@ RUNTIME = ${ORG}/${APP}-rt
 ## configuration flags
 WITH_NATIVE_LIB ?= false
 DFLAGS = \
-   --rm=true \
-   --build-arg OTP_VERSION=${ERL_VSN} \
-   --build-arg SSL_VERSION=${SSL_VSN} \
+  --rm=true \
+  --build-arg OTP_VERSION=${ERL_VSN} \
+  --build-arg SSL_VERSION=${SSL_VSN} \
 	--build-arg WITH_NATIVE=${WITH_NATIVE_LIB}
 
 ##
 ## 
 docker: Dockerfile
 	@echo "==> build ${DOCKER}"
-	@docker build ${DFLAGS} -t ${DOCKER}:${ERL_VSN} - < $<
+	@docker build ${DFLAGS} -t ${DOCKER}:${ERL_VSN} .
 	@docker tag ${DOCKER}:${ERL_VSN} ${DOCKER}:latest
 
 ##
