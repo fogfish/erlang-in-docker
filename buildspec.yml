@@ -4,6 +4,7 @@ phases:
   install:
     commands:
       - echo "==> [build] install"
+      - /usr/local/bin/config.sh
   pre_build:
     commands:
       - echo "==> [build] pre-build"
