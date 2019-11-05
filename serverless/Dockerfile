@@ -113,15 +113,15 @@ RUN set -e \
    && rm ${WITH_PREFIX}/serverless/lib/erlang/erts-*/bin/typer \
    && rm ${WITH_PREFIX}/serverless/lib/erlang/erts-*/bin/ct_run
 
-##
-## required to run Erlang release 
-# RUN set -e \
-#    && yum -y install \
-#       zip
 
 FROM amazonlinux
 
 ARG WITH_PREFIX
+
+RUN set -e \
+   && yum -y install \
+      zip \
+   && yum clean all
 
 COPY --from=0 ${WITH_PREFIX}/serverless ${WITH_PREFIX}/serverless
 COPY erlang.cookie ${WITH_PREFIX}/.erlang.cookie
