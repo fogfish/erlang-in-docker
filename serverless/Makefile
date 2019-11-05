@@ -30,7 +30,11 @@ DFLAGS = \
 
 ##
 ## layer builder
-BUILDER = FROM ${DOCKER}:${ERL_VSN}\nRUN cd ${WITH_PREFIX} && zip ${APP}-${ERL_VSN}.zip -r * > /dev/null
+define BUILDER
+FROM ${DOCKER}:${ERL_VSN}
+RUN cd ${WITH_PREFIX} && zip ${APP}-${ERL_VSN}.zip -r * > /dev/null
+endef
+export BUILDER
 
 all: docker layer
 
@@ -50,7 +54,7 @@ layer: ${APP}-${ERL_VSN}.zip
 		--zip-file fileb://./$^
 
 ${APP}-${ERL_VSN}.zip:
-	echo "${BUILDER}" > Dockerfile.layer ;\
+	echo "$$BUILDER" > Dockerfile.layer ;\
 	docker build --file=Dockerfile.layer --force-rm=true --tag=build/${APP}:latest . ;\
 	I=`docker create build/${APP}:latest` ;\
 	docker cp $$I:${WITH_PREFIX}/$@ $@ ;\
