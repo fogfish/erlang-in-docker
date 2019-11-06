@@ -3,15 +3,15 @@ version: 0.2
 phases:
   install:
     commands:
-      - echo "==> [build] install"
+      - echo "==> install"
       - /usr/local/bin/config.sh
   pre_build:
     commands:
-      - echo "==> [build] pre-build"
+      - echo "==> pre-build"
   build:
     commands:
-      - echo "==> [build] build"
+      - echo "==> build"
       - make
   post_build:
     commands:
-      - echo "==> [build] post-build"
+      - echo "==> post-build"
