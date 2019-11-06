@@ -128,5 +128,3 @@ COPY erlang.cookie ${WITH_PREFIX}/.erlang.cookie
 COPY function /function
 
 ENV PATH $PATH:${WITH_PREFIX}/bin
-
-
